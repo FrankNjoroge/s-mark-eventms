@@ -189,3 +189,15 @@ export const notificationService = {
     return response.data;
   },
 };
+
+export const analyticsService = {
+  getAnalytics: async (timeRange = "month") => {
+    try {
+      const response = await api.get("/analytics", { params: { timeRange } });
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching analytics:", error);
+      throw error;
+    }
+  },
+};
