@@ -32,7 +32,6 @@ const Analytics = () => {
     topEvents: [],
     userGrowth: [],
   });
-
   useEffect(() => {
     let timeout = setTimeout(async () => {
       try {
@@ -177,21 +176,27 @@ const Analytics = () => {
           <div className="h-80">
             <Suspense fallback={<p>Loading Chart...</p>}>
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={stats.registrationsByMonth}
-                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar
-                    dataKey="registrations"
-                    fill="#8884d8"
-                    name="Registrations"
-                  />
-                </BarChart>
+                {stats.registrationsByMonth?.length > 0 ? (
+                  <BarChart
+                    data={stats.registrationsByMonth}
+                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar
+                      dataKey="registrations"
+                      fill="#8884d8"
+                      name="Registrations"
+                    />
+                  </BarChart>
+                ) : (
+                  <p className="text-gray-500">
+                    No registration data available
+                  </p>
+                )}
               </ResponsiveContainer>
             </Suspense>
           </div>
