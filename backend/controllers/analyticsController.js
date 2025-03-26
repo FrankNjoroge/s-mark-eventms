@@ -29,9 +29,19 @@ const getAnalytics = async (req, res) => {
     });
 
     // Total Registrations
-    const totalRegistrations = await Booking.countDocuments({
-      createdAt: { $gte: startDate },
-    });
+    // const totalRegistrations = await Booking.countDocuments({
+    //   createdAt: { $gte: startDate },
+    // });
+    const totalRegistrationsResult = await Booking.aggregate([
+      { $match: { createdAt: { $gte: startDate } } },
+      {
+        $group: { _id: null, totalRegistrations: { $sum: "$numberOfTickets" } },
+      },
+    ]);
+
+    const totalRegistrations = totalRegistrationsResult.length
+      ? totalRegistrationsResult[0].totalRegistrations
+      : 0;
 
     //Total Revenue
     const totalRevenueResult = await Booking.aggregate([
