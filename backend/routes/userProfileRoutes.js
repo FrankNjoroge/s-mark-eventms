@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 const { authenticateToken } = require("../middleware/authMiddleware");
+const { getProfile, updateProfile } = require("../controllers/userController");
 
 //  @route   GET /api/profile
 //  @desc    Get user profile
