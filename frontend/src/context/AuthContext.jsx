@@ -1,16 +1,16 @@
 "use client";
 
-import { createContext, useState, useEffect, useContext } from "react";
+import { createContext, useState, useEffect } from "react";
 import { api } from "../services/api";
 import toast from "react-hot-toast";
+import { profileService } from "../services/api";
 
-const AuthContext = createContext({});
+export const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Function to set auth token in axios headers
   const setAuthToken = (token) => {
     if (token) {
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -19,32 +19,25 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const fetchUserProfile = async () => {
+    try {
+      const data = await profileService.getProfile();
+      localStorage.setItem("@EventMS:user", JSON.stringify(data));
+      setUser(data);
+    } catch (error) {
+      console.error("Failed to fetch profile:", error);
+    }
+  };
+
   useEffect(() => {
     const initializeAuth = async () => {
       try {
         setLoading(true);
-        const storedUser = localStorage.getItem("@EventMS:user");
         const storedToken = localStorage.getItem("@EventMS:token");
 
-        if (storedUser && storedToken) {
-          // Set the token in axios headers
+        if (storedToken) {
           setAuthToken(storedToken);
-
-          // Validate token by making a request to get current user
-          try {
-            // Optional: Verify token is valid by making a request
-            // const response = await api.get('/auth/me')
-            // setUser(response.data)
-
-            // For now, just use the stored user
-            setUser(JSON.parse(storedUser));
-          } catch (error) {
-            console.error("Token validation failed:", error);
-            // If token validation fails, clear storage
-            localStorage.removeItem("@EventMS:user");
-            localStorage.removeItem("@EventMS:token");
-            setAuthToken(null);
-          }
+          await fetchUserProfile();
         }
       } catch (error) {
         console.error("Auth initialization error:", error);
@@ -61,15 +54,11 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       const response = await api.post("/auth/login", { email, password });
 
-      const { user, token } = response.data;
-
-      // Store auth data
-      localStorage.setItem("@EventMS:user", JSON.stringify(user));
+      const { token } = response.data;
       localStorage.setItem("@EventMS:token", token);
-
-      // Set token in axios headers
       setAuthToken(token);
-      setUser(user);
+
+      await fetchUserProfile();
 
       toast.success("Login successful!");
       return true;
@@ -85,11 +74,7 @@ export const AuthProvider = ({ children }) => {
   const register = async (name, email, password) => {
     try {
       setLoading(true);
-      const response = await api.post("/auth/register", {
-        name,
-        email,
-        password,
-      });
+      await api.post("/auth/register", { name, email, password });
 
       toast.success("Registration successful! Please login.");
       return true;
@@ -116,11 +101,10 @@ export const AuthProvider = ({ children }) => {
   const updateProfile = async (userData) => {
     try {
       setLoading(true);
-      const response = await api.put("/users/profile", userData);
+      const response = await profileService.updateProfile(userData);
 
-      const updatedUser = response.data;
-      localStorage.setItem("@EventMS:user", JSON.stringify(updatedUser));
-      setUser(updatedUser);
+      localStorage.setItem("@EventMS:user", JSON.stringify(response));
+      setUser(response);
 
       toast.success("Profile updated successfully!");
       return true;
@@ -157,5 +141,3 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
-export const useAuth = () => useContext(AuthContext);
