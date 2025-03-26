@@ -5,7 +5,7 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { eventService } from "../services/api";
 import { useAuth } from "../context/AuthContext";
 import { Calendar, Clock, MapPin, Users, Edit, Trash2 } from "lucide-react";
-import { format, parseISO } from "date-fns";
+import { format } from "date-fns";
 import toast from "react-hot-toast";
 
 const EventDetails = () => {
