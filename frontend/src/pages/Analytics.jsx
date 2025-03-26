@@ -112,7 +112,7 @@ const Analytics = () => {
           },
           {
             label: "Total Revenue",
-            value: `$${stats.totalRevenue.toLocaleString()}`,
+            value: `Ksh ${stats.totalRevenue.toLocaleString()}`,
             icon: <DollarSign />,
           },
         ].map((card, index) => (
