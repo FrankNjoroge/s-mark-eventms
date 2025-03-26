@@ -9,6 +9,7 @@ const eventRoutes = require("./routes/eventRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
 const vendorRoutes = require("./routes/vendorRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
+const analyticsRoutes = require("./routes/analyticsRoutes.js");
 
 // Connect to database
 const connectDB = require("./config/database");
@@ -28,6 +29,7 @@ app.use("/api/events", eventRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/vendors", vendorRoutes);
 app.use("/api/notifications", notificationRoutes);
+api.use("/api/analytics", analyticsRoutes);
 
 // Global error handler
 app.use((err, req, res, next) => {
