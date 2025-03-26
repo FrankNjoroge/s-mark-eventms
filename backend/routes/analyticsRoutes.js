@@ -1,8 +1,8 @@
-import express from "express";
-import Event from "../models/Event.js";
-import User from "../models/User.js";
-import Booking from "../models/Booking.js";
-import mongoose from "mongoose";
+const express = require("express");
+const Event = require("../models/Event.js");
+const User = require("../models/User.js");
+const Booking = require("../models/Booking.js");
+const mongoose = require("mongoose");
 
 const router = express.Router();
 
@@ -179,4 +179,4 @@ router.get("/", async (req, res) => {
   }
 });
 
-export default router;
+module.exports = router;
