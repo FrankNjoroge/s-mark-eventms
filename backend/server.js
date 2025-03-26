@@ -10,6 +10,7 @@ const bookingRoutes = require("./routes/bookingRoutes");
 const vendorRoutes = require("./routes/vendorRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
 const analyticsRoutes = require("./routes/analyticsRoutes.js");
+const userProfileRoutes = require("./routes/userProfileRoutes.js");
 
 // Connect to database
 const connectDB = require("./config/database");
@@ -30,6 +31,7 @@ app.use("/api/bookings", bookingRoutes);
 app.use("/api/vendors", vendorRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/analytics", analyticsRoutes);
+app.use("/api/profile", userProfileRoutes);
 
 // Global error handler
 app.use((err, req, res, next) => {
