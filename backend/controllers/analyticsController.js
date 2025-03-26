@@ -59,46 +59,46 @@ const getAnalytics = async (req, res) => {
 
     // Registrations by Month
     const registrationsByMonth = await Booking.aggregate([
-      { $match: { createdAt: { $gte: startDate } } },
+      {
+        $match: {
+          createdAt: {
+            $gte: new Date(
+              new Date().setFullYear(new Date().getFullYear() - 1)
+            ),
+          },
+        },
+      }, // Filter last 12 months
       {
         $group: {
-          _id: { $month: "$createdAt" },
-          registrations: { $sum: 1 },
-          revenue: { $sum: "$price" },
+          _id: { $month: "$createdAt" }, // Group by month (1 = Jan, 12 = Dec)
+          totalRegistrations: { $sum: "$numberOfTickets" }, // Sum all ticket registrations per month
         },
       },
-      { $sort: { _id: 1 } },
-      {
-        $project: {
-          name: {
-            $concat: [
-              {
-                $arrayElemAt: [
-                  [
-                    "Jan",
-                    "Feb",
-                    "Mar",
-                    "Apr",
-                    "May",
-                    "Jun",
-                    "Jul",
-                    "Aug",
-                    "Sep",
-                    "Oct",
-                    "Nov",
-                    "Dec",
-                  ],
-                  { $subtract: ["$_id", 1] },
-                ],
-              },
-            ],
-          },
-          registrations: 1,
-          revenue: 1,
-          _id: 0,
-        },
-      },
+      { $sort: { _id: 1 } }, // Sort by month (ascending)
     ]);
+
+    // Convert month numbers (1-12) into month names
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    const formattedRegistrationsByMonth = registrationsByMonth.map((entry) => ({
+      name: monthNames[entry._id - 1], // Convert month number to name
+      registrations: entry.totalRegistrations || 0,
+    }));
+
+    console.log("Registrations By Month:", formattedRegistrationsByMonth); // ✅ Debugging Log
 
     // Top 5 Events by Registrations
     const topEvents = await Booking.aggregate([
@@ -172,7 +172,7 @@ const getAnalytics = async (req, res) => {
       totalRegistrations,
       totalRevenue,
       eventsByCategory,
-      registrationsByMonth,
+      registrationsByMonth: formattedRegistrationsByMonth,
       topEvents,
       userGrowth,
     });
