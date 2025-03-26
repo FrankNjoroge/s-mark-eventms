@@ -5,7 +5,7 @@ import { Plus, Edit, Trash2, Send, Save, Search, Filter } from "lucide-react";
 import { format } from "date-fns";
 import toast from "react-hot-toast";
 import { notificationService, eventService } from "../services/api";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/useAuth";
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
@@ -87,6 +87,7 @@ const Notifications = () => {
           notifications.filter((notification) => notification._id !== id)
         );
       } catch (err) {
+        console.log(err);
         toast.error("Failed to delete notification");
       }
     }
@@ -103,6 +104,7 @@ const Notifications = () => {
         toast.success("Notification sent successfully");
         fetchNotifications();
       } catch (err) {
+        console.log(err);
         toast.error("Failed to send notification");
       }
     }

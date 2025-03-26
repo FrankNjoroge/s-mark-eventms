@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Bell, X, Check, Clock } from "lucide-react";
 import { format } from "date-fns";
 import { notificationService } from "../services/api";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/useAuth";
 
 const NotificationList = () => {
   const [notifications, setNotifications] = useState([]);

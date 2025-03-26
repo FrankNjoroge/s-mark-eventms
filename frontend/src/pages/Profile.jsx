@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/useAuth";
 import { User, Mail, Phone, MapPin, Calendar, Save } from "lucide-react";
 
 const Profile = () => {

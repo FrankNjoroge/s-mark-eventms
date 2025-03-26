@@ -1,9 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { eventService } from "../services/api";
-import axios from "axios";
 import {
   Calendar,
   Users,
@@ -13,35 +12,11 @@ import {
   CheckCircle,
   Star,
 } from "lucide-react";
-import { format, isValid, parseISO } from "date-fns";
+import { format, isValid } from "date-fns";
 
 const LandingPage = () => {
-  const navigate = useNavigate();
   const [featuredEvents, setFeaturedEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // useEffect(() => {
-  //   const fetchFeaturedEvents = async () => {
-  //     try {
-  //       setLoading(true);
-  //       // Fetch a limited number of upcoming events to showcase
-  //       const data = await eventService.getEvents({ limit: 3 });
-
-  //       if (Array.isArray(data)) {
-  //         setFeaturedEvents(data);
-  //       } else {
-  //         setFeaturedEvents([]);
-  //       }
-  //     } catch (err) {
-  //       console.error("Error fetching featured events:", err);
-  //       setFeaturedEvents([]);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchFeaturedEvents();
-  // }, []);
 
   useEffect(() => {
     const fetchFeaturedEvents = async () => {
@@ -60,7 +35,7 @@ const LandingPage = () => {
     };
 
     fetchFeaturedEvents(); // Call the function inside useEffect
-  }, []);
+  }, [featuredEvents]);
 
   // Features section data
   const features = [
