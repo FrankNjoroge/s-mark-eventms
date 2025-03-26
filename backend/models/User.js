@@ -28,6 +28,10 @@ const UserSchema = new mongoose.Schema(
         sms: Boolean,
       },
     },
+    phone: { type: String },
+    address: { type: String },
+    bio: { type: String },
+    birthdate: { type: Date },
   },
   { timestamps: true }
 );
