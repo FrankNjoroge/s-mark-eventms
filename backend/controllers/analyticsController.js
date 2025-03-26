@@ -29,9 +29,6 @@ const getAnalytics = async (req, res) => {
     });
 
     // Total Registrations
-    // const totalRegistrations = await Booking.countDocuments({
-    //   createdAt: { $gte: startDate },
-    // });
     const totalRegistrationsResult = await Booking.aggregate([
       { $match: { createdAt: { $gte: startDate } } },
       {
@@ -45,9 +42,10 @@ const getAnalytics = async (req, res) => {
 
     //Total Revenue
     const totalRevenueResult = await Booking.aggregate([
-      { $match: { createdAt: { $gte: startDate } } },
-      { $group: { _id: null, totalRevenue: { $sum: "$price" } } },
+      { $match: { createdAt: { $gte: startDate } } }, // Filter by time range
+      { $group: { _id: null, totalRevenue: { $sum: "$totalPrice" } } }, // Sum all bookings' totalPrice
     ]);
+
     const totalRevenue = totalRevenueResult.length
       ? totalRevenueResult[0].totalRevenue
       : 0;
