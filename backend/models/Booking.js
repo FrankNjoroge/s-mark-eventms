@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const BookingSchema = new mongoose.Schema(
   {
-    event: {
+    eventID: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Event",
       required: true,
@@ -12,9 +12,9 @@ const BookingSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    tickets: {
+    numberOfTickets: {
       type: Number,
-      default: 1,
+      required: true,
     },
     totalPrice: {
       type: Number,

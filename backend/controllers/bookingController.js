@@ -58,6 +58,34 @@ const createBooking = async (req, res) => {
   }
 };
 
+const cancelRegistration = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const eventId = req.params.eventId;
+
+    // Find and delete the user's booking for the event
+    const booking = await Booking.findOneAndDelete({
+      user: userId,
+      eventID: eventId,
+    });
+
+    if (!booking) {
+      return res
+        .status(404)
+        .json({ message: "Registration not found or already cancelled" });
+    }
+
+    // Optionally, update the event's attendee count
+    await Event.findByIdAndUpdate(eventId, { $pull: { attendees: userId } });
+
+    res.status(200).json({ message: "Registration cancelled successfully" });
+  } catch (error) {
+    console.error("Error cancelling registration:", error);
+    res.status(500).json({ message: "Failed to cancel registration" });
+  }
+};
+
 module.exports = {
   createBooking,
+  cancelRegistration,
 };

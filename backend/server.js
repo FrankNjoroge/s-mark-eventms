@@ -7,6 +7,8 @@ const helmet = require("helmet");
 const authRoutes = require("./routes/authRoutes");
 const eventRoutes = require("./routes/eventRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
+const vendorRoutes = require("./routes/vendorRoutes");
+const notificationRoutes = require("./routes/notificationRoutes");
 
 // Connect to database
 const connectDB = require("./config/database");
@@ -24,6 +26,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", authRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/bookings", bookingRoutes);
+app.use("/api/vendors", vendorRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 // Global error handler
 app.use((err, req, res, next) => {

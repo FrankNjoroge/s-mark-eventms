@@ -14,13 +14,14 @@ const EventSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    time: {
+      type: String,
+      default: "09:00",
+      required: true,
+    },
     location: {
-      venue: String,
-      address: String,
-      coordinates: {
-        lat: Number,
-        lng: Number,
-      },
+      type: String,
+      default: "Not specified",
     },
     organizer: {
       type: mongoose.Schema.Types.ObjectId,
@@ -35,13 +36,21 @@ const EventSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    categories: [String],
+    category: {
+      type: String,
+      default: "Conference",
+      required: false,
+    },
     status: {
       type: String,
       enum: ["draft", "published", "cancelled"],
       default: "draft",
     },
-    coverImage: String,
+    image: {
+      type: String,
+    },
+    attendees: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+
     tags: [String],
   },
   { timestamps: true }
