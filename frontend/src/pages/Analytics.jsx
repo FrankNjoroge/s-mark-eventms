@@ -37,7 +37,6 @@ const Analytics = () => {
       try {
         setLoading(true);
         const data = await analyticsService.getAnalytics(timeRange);
-        console.log("Analytics Data from API:", data); // Debugging
         setStats(data);
         setError(null);
       } catch (err) {
@@ -50,10 +49,6 @@ const Analytics = () => {
 
     return () => clearTimeout(timeout);
   }, [timeRange]);
-
-  useEffect(() => {
-    console.log("Updated Stats State:", stats);
-  }, [stats]);
 
   const COLORS = [
     "#0088FE",
