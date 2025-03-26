@@ -98,34 +98,34 @@ const getAnalytics = async (req, res) => {
       registrations: entry.totalRegistrations || 0,
     }));
 
-    console.log("Registrations By Month:", formattedRegistrationsByMonth); // ✅ Debugging Log
-
     // Top 5 Events by Registrations
     const topEvents = await Booking.aggregate([
       { $match: { createdAt: { $gte: startDate } } },
       {
         $group: {
-          _id: "$eventId",
-          registrations: { $sum: 1 },
-          revenue: { $sum: "$price" },
+          _id: "$eventID",
+          totalRegistrations: { $sum: "$numberOfTickets" },
+          totalRevenue: { $sum: "$totalPrice" },
         },
       },
-      { $sort: { registrations: -1 } },
+      { $sort: { totalRegistrations: -1 } },
       { $limit: 5 },
       {
         $lookup: {
+          // Fetch event details
           from: "events",
           localField: "_id",
           foreignField: "_id",
           as: "eventDetails",
         },
       },
+      { $unwind: "$eventDetails" }, // Flatten event details
       {
         $project: {
-          name: { $arrayElemAt: ["$eventDetails.name", 0] },
-          registrations: 1,
-          revenue: 1,
           _id: 0,
+          name: "$eventDetails.title",
+          registrations: "$totalRegistrations",
+          revenue: "$totalRevenue",
         },
       },
     ]);
