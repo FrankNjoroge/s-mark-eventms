@@ -19,23 +19,22 @@ const LandingPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchFeaturedEvents = async () => {
-      setLoading(true);
+    const fetchEvents = async () => {
       try {
-        const data = await eventService.getEvents();
-        const events = data.events;
-        setFeaturedEvents(Array.isArray(events) ? events : []);
-        console.log(featuredEvents);
-      } catch (err) {
-        console.error("Error fetching featured events:", err);
-        setFeaturedEvents([]);
+        setLoading(true);
+        const response = await eventService.getEvents();
+        const data = await response.events;
+        console.log("Fetched Events:", data); // Debugging log
+        setFeaturedEvents(data);
+      } catch (error) {
+        console.error("Error fetching events:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchFeaturedEvents(); // Call the function inside useEffect
-  }, [featuredEvents]);
+    fetchEvents();
+  }, []);
 
   // Features section data
   const features = [
@@ -171,77 +170,6 @@ const LandingPage = () => {
             </div>
           ) : (
             <div className="grid md:grid-cols-3 gap-8">
-              {/* {featuredEvents.map((event) => {
-                // Safe access to event properties with fallbacks
-                const eventTicketPrice =
-                  event.ticketPrice !== undefined
-                    ? event.ticketPrice
-                    : event.price || 0;
-                const eventCategory = event.category || "Uncategorized";
-                const eventAttendees = Array.isArray(event.attendees)
-                  ? event.attendees
-                  : [];
-                const eventCapacity = event.capacity || 0;
-
-                return (
-                  <div
-                    key={event._id}
-                    onClick={() => navigate(`/events/${event._id}`)}
-                    className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
-                  >
-                    <div className="h-48 bg-gray-200 relative">
-                      {event.image ? (
-                        <img
-                          src={event.image || "/placeholder.svg"}
-                          alt={event.title}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-indigo-100">
-                          <Calendar className="h-16 w-16 text-indigo-400" />
-                        </div>
-                      )}
-                      <div className="absolute top-0 right-0 bg-indigo-600 text-white px-3 py-1 m-2 rounded-md text-sm font-medium">
-                        {eventCategory}
-                      </div>
-                    </div>
-                    <div className="p-4">
-                      <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                        {event.title}
-                      </h3>
-                      <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                        {event.description}
-                      </p>
-                      <div className="flex items-center text-gray-500 text-sm mb-2">
-                        <Calendar className="h-4 w-4 mr-2" />
-                        <span>
-                          {format(new Date(event.date), "MMMM d, yyyy")}
-                        </span>
-                      </div>
-                      <div className="flex items-center text-gray-500 text-sm mb-2">
-                        <Clock className="h-4 w-4 mr-2" />
-                        <span>{format(new Date(event.time), "h:mm a")}</span>
-                      </div>
-                      <div className="flex items-center text-gray-500 text-sm">
-                        <MapPin className="h-4 w-4 mr-2" />
-                        <span>{event.location}</span>
-                      </div>
-                    </div>
-                    <div className="px-4 py-3 bg-gray-50 border-t border-gray-100">
-                      <div className="flex justify-between items-center">
-                        <span className="text-indigo-600 font-medium">
-                          {eventTicketPrice > 0
-                            ? `$${eventTicketPrice.toFixed(2)}`
-                            : "Free"}
-                        </span>
-                        <span className="text-gray-500 text-sm">
-                          {eventCapacity - eventAttendees.length} spots left
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })} */}
               {featuredEvents.map((event) => {
                 const eventDate = event.date ? new Date(event.date) : null;
                 const eventTime = event.time ? new Date(event.time) : null;
