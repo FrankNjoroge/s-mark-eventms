@@ -212,3 +212,47 @@ export const profileService = {
     return response.data;
   },
 };
+// New payment service
+export const paymentService = {
+  // Process a payment for an event booking
+  processPayment: async (paymentData) => {
+    const response = await api.post("/payments/process", paymentData);
+    return response.data;
+  },
+
+  // Get payment methods for the current user
+  getPaymentMethods: async () => {
+    const response = await api.get("/payments/methods");
+    return response.data;
+  },
+
+  // Add a new payment method
+  addPaymentMethod: async (methodData) => {
+    const response = await api.post("/payments/methods", methodData);
+    return response.data;
+  },
+
+  // Delete a payment method
+  deletePaymentMethod: async (methodId) => {
+    const response = await api.delete(`/payments/methods/${methodId}`);
+    return response.data;
+  },
+
+  // Get payment history for the current user
+  getPaymentHistory: async () => {
+    const response = await api.get("/payments/history");
+    return response.data;
+  },
+
+  // Get a specific payment receipt
+  getPaymentReceipt: async (paymentId) => {
+    const response = await api.get(`/payments/${paymentId}/receipt`);
+    return response.data;
+  },
+
+  // Verify a payment status
+  verifyPayment: async (paymentId) => {
+    const response = await api.get(`/payments/${paymentId}/verify`);
+    return response.data;
+  },
+};
