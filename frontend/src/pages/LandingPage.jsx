@@ -24,7 +24,6 @@ const LandingPage = () => {
         setLoading(true);
         const response = await eventService.getEvents();
         const data = await response.events;
-        console.log("Fetched Events:", data); // Debugging log
         setFeaturedEvents(data);
       } catch (error) {
         console.error("Error fetching events:", error);
@@ -172,7 +171,14 @@ const LandingPage = () => {
             <div className="grid md:grid-cols-3 gap-8">
               {featuredEvents.map((event) => {
                 const eventDate = event.date ? new Date(event.date) : null;
-                const eventTime = event.time ? new Date(event.time) : null;
+                let eventTime = event.time ? new Date(event.time) : null;
+
+                if (event.time && event.date) {
+                  // Combine date and time to create a full Date object
+                  const [hours, minutes, seconds] = event.time.split(":");
+                  eventTime = new Date(eventDate);
+                  eventTime.setHours(hours, minutes, seconds || 0);
+                }
 
                 return (
                   <div
