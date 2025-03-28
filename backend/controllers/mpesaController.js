@@ -1,7 +1,5 @@
 import axios from "axios";
 import { getMpesaToken } from "./mpesaService.js";
-import dotenv from "dotenv";
-dotenv.config();
 
 const lipaNaMpesa = async (req, res) => {
   const { phone, amount } = req.body;
