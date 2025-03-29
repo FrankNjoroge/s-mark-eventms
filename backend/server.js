@@ -11,6 +11,7 @@ const vendorRoutes = require("./routes/vendorRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
 const analyticsRoutes = require("./routes/analyticsRoutes.js");
 const userProfileRoutes = require("./routes/userProfileRoutes.js");
+const mpesaRoutes = require("./routes/mpesaRoutes.js");
 
 // Connect to database
 const connectDB = require("./config/database");
@@ -32,6 +33,9 @@ app.use("/api/vendors", vendorRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/analytics", analyticsRoutes);
 app.use("/api/profile", userProfileRoutes);
+z;
+app.use("/api/mpesa", mpesaRoutes);
+z;
 
 // Global error handler
 app.use((err, req, res, next) => {
