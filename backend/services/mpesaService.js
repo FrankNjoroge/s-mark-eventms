@@ -1,4 +1,4 @@
-import axios from "axios";
+const axios = require("axios");
 
 const getMpesaToken = async () => {
   const auth = Buffer.from(
@@ -17,4 +17,4 @@ const getMpesaToken = async () => {
   }
 };
 
-export { getMpesaToken };
+module.exports = { getMpesaToken };
