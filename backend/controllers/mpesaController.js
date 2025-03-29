@@ -1,5 +1,5 @@
-import axios from "axios";
-import { getMpesaToken } from "./mpesaService.js";
+const axios = require("axios");
+const { getMpesaToken } = require("../services/mpesaService");
 
 const lipaNaMpesa = async (req, res) => {
   const { phone, amount } = req.body;
@@ -41,4 +41,4 @@ const lipaNaMpesa = async (req, res) => {
   }
 };
 
-export { lipaNaMpesa };
+module.exports = { lipaNaMpesa };
