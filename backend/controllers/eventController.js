@@ -189,7 +189,6 @@ const getUserEvents = async (req, res) => {
 const getUserBookings = async (req, res) => {
   try {
     const userId = req.user._id;
-    console.log("Fetching bookings for user ID:", userId);
 
     if (!userId) {
       return res.status(400).json({ message: "User ID is required" });
