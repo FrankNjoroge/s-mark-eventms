@@ -40,5 +40,9 @@ const lipaNaMpesa = async (req, res) => {
     res.status(500).json({ error: "Mpesa payment failed" });
   }
 };
+const handleMpesaCallback = (req, res) => {
+  console.log("Mpesa Callback Data:", req.body);
+  res.status(200).json({ message: "Callback received" });
+};
 
-module.exports = { lipaNaMpesa };
+module.exports = { lipaNaMpesa, handleMpesaCallback };
