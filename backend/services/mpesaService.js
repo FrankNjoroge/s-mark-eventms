@@ -8,7 +8,12 @@ const getMpesaToken = async () => {
   try {
     const response = await axios.get(
       "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials",
-      { headers: { Authorization: `Basic ${auth}` } }
+      {
+        headers: {
+          Authorization: `Basic ${auth}`,
+          "Content-Type": "application/json",
+        },
+      }
     );
     return response.data.access_token;
   } catch (error) {
@@ -33,7 +38,7 @@ const reverseMpesaTransaction = async (transactionId, amount) => {
       Remarks: "Reversal request",
       Occasion: "Mistaken transaction",
     };
-    console.log(payload);
+    console.log("Payload:", payload);
 
     const response = await axios.post(process.env.MPESA_REVERSAL_URL, payload, {
       headers: { Authorization: `Bearer ${token}` },
